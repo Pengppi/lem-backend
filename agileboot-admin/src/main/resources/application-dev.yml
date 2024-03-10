@@ -50,25 +50,25 @@ spring:
             datasource:
                 # 主库数据源
                 master:
-                    url: jdbc:mysql://localhost:33067/agileboot-pure?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                    url: jdbc:mysql://172.19.229.202:3306/lem?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                     username: root
-                    password: 12345
+                    password: abc123
                 # 从库数据源
 #                slave:
-#                    url: jdbc:mysql://localhost:33067/agileboot2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#                    url: jdbc:mysql://172.19.229.202:3306/lem?2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
 #                    username: root
-#                    password: 12345
+#                    password: abc123
 
     # redis 配置
     redis:
-        # 地址
-        host: localhost
+        # 地址 172.19.229.202
+        host: 172.19.229.202
         # 端口，默认为6379
-        port: 36379
+        port: 6379
         # 数据库索引
         database: 0
         # 密码
-        password: 12345
+        password:
         # 连接超时时间
         timeout: 10s
         lettuce:
@@ -84,7 +84,7 @@ spring:
 
 logging:
     file:
-        path: D:/logs/agileboot-dev
+        path: ./logs
 
 
 springdoc:
@@ -99,7 +99,7 @@ springdoc:
 # 项目相关配置
 agileboot:
     # 文件基路径 示例（ Windows配置D:\agileboot，Linux配置 /home/agileboot）
-    file-base-dir: D:\agileboot
+    file-base-dir: ./file/lem
     # 前端url请求转发前缀
     api-prefix: /dev-api
     demo-enabled: false
