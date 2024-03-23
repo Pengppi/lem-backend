@@ -41,6 +41,9 @@ public class EquipmentDTO {
     @ExcelColumn(name = "设备状态")
     Integer status;
     
+    @ExcelColumn(name = "设备描述")
+    String description;
+    
     @ExcelColumn(name = "备注")
     String remark;
     

@@ -1,6 +1,6 @@
 package com.agileboot.domain.system.dept.db;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.yulichang.base.MPJBaseMapper;
 
 /**
  * <p>
@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author valarchie
  * @since 2022-06-16
  */
-public interface SysDeptMapper extends BaseMapper<SysDeptEntity> {
+public interface SysDeptMapper extends MPJBaseMapper<SysDeptEntity> {
 
 }

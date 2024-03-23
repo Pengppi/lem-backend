@@ -7,9 +7,11 @@
 
 package com.agileboot.domain.lem.equipment.command;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ChangeEquipmentStatusCommand {
     Long equipmentId;
     Integer status;
