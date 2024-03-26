@@ -11,6 +11,8 @@ import cn.hutool.core.util.StrUtil;
 import com.agileboot.common.core.page.MPJAbstractPageQuery;
 import com.agileboot.domain.lem.equipment.db.EquipmentEntity;
 import com.agileboot.domain.lem.reservation.db.ReservationEntity;
+import com.agileboot.domain.lem.reservation.dto.ReservationDTO;
+import com.agileboot.domain.system.user.db.SysUserEntity;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.Data;
 
@@ -27,8 +29,10 @@ public class ReservationQuery extends MPJAbstractPageQuery {
     public MPJLambdaWrapper addQueryCondition() {
         MPJLambdaWrapper queryWrapper = new MPJLambdaWrapper<ReservationEntity>()
                 .selectAll(ReservationEntity.class)
-                .selectAs(EquipmentEntity::getName, "equipmentName")
+                .selectAs(EquipmentEntity::getName, ReservationDTO::getEquipmentName)
+                .selectAs(SysUserEntity::getUsername, ReservationDTO::getUserName)
                 .leftJoin(EquipmentEntity.class, EquipmentEntity::getEquipmentId, ReservationEntity::getEquipmentId)
+                .leftJoin(SysUserEntity.class, SysUserEntity::getUserId, ReservationEntity::getCreatorId)
                 .eq(userId != null, ReservationEntity::getCreatorId, userId)
                 .eq(equipmentName != null, EquipmentEntity::getName, equipmentName)
                 .eq(status != null, ReservationEntity::getStatus, status);

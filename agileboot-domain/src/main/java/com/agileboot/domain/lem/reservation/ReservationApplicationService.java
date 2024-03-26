@@ -61,12 +61,18 @@ public class ReservationApplicationService {
         return sysDeptMapper.selectJoinList(ReviewerDTO.class, queryWrapper);
     }
     
-    public PageDTO<ReservationDTO> getReservationList(ReservationQuery query) {
-        Page<ReservationDTO> reservationList = reservationService.selectJoinListPage(query.toPage(), ReservationDTO.class, query.toQueryWrapper());
-        reservationList.getRecords()
-                .forEach(reservationDTO ->
+    public List<ReservationDTO> getReservationList(ReservationQuery query) {
+        List<ReservationDTO> reservationList = reservationService.selectJoinList(ReservationDTO.class, query.toQueryWrapper());
+        reservationList.forEach(reservationDTO ->
                         reservationDTO.setApprovalResults(approvalApplicationService.getApprovalResultList(reservationDTO.getReservationId())));
-        return new PageDTO<>(reservationList);
+        return reservationList;
+    }
+    
+    public PageDTO<ReservationDTO> getReservationPage(ReservationQuery query) {
+        Page<ReservationDTO> reservationPage = reservationService.selectJoinListPage(query.toPage(), ReservationDTO.class, query.toQueryWrapper());
+        reservationPage.getRecords().forEach(reservationDTO ->
+                reservationDTO.setApprovalResults(approvalApplicationService.getApprovalResultList(reservationDTO.getReservationId())));
+        return new PageDTO<>(reservationPage);
     }
     
     

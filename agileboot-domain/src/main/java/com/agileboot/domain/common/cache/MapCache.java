@@ -42,7 +42,8 @@ public class MapCache {
         loadInCache(LoginStatusEnum.values());
         loadInCache(VisibleStatusEnum.values());
         loadInCache(UserStatusEnum.values());
-        
+        loadInCache(ApprovalStatusEnum.values());
+        loadInCache(ReservationStatusEnum.values());
         loadInCache(EquipmentStatusEnum.values());
     }
 

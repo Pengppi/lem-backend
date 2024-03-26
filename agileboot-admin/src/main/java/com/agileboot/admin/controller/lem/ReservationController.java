@@ -11,6 +11,7 @@ import com.agileboot.admin.customize.aop.accessLog.AccessLog;
 import com.agileboot.common.core.dto.ResponseDTO;
 import com.agileboot.common.core.page.PageDTO;
 import com.agileboot.common.enums.common.BusinessTypeEnum;
+import com.agileboot.common.utils.poi.CustomExcelUtil;
 import com.agileboot.domain.lem.reservation.ReservationApplicationService;
 import com.agileboot.domain.lem.reservation.command.AddReservationCommand;
 import com.agileboot.domain.lem.reservation.command.ChangeReservationStatusCommand;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Tag(name = "预约设备API", description = "预约记录的增删查改")
@@ -33,13 +35,29 @@ import java.util.List;
 public class ReservationController {
     private final ReservationApplicationService reservationApplicationService;
     
+    
+    @Operation(summary = "查看所有预约记录")
+    @GetMapping("/all")
+    public ResponseDTO<PageDTO<ReservationDTO>> getAllReservationRecord(ReservationQuery query) {
+        return ResponseDTO.ok(reservationApplicationService.getReservationPage(query));
+    }
+    
     @Operation(summary = "查看预约记录")
     @GetMapping("/list")
-    public ResponseDTO<PageDTO<ReservationDTO>> getMyReservationRecord(@RequestBody ReservationQuery query) {
+    public ResponseDTO<List<ReservationDTO>> getMyReservationRecord() {
+        ReservationQuery query = new ReservationQuery();
         query.setUserId(AuthenticationUtils.getUserId());
         return ResponseDTO.ok(reservationApplicationService.getReservationList(query));
     }
     
+    @Operation(summary = "预约列表导出")
+    @AccessLog(title = "预约管理", businessType = BusinessTypeEnum.EXPORT)
+    @PreAuthorize("@permission.has('lem:reservation:export')")
+    @GetMapping("/excel")
+    public void export(HttpServletResponse response, ReservationQuery query) {
+        List<ReservationDTO> all = reservationApplicationService.getReservationList(query);
+        CustomExcelUtil.writeToResponse(all, ReservationDTO.class, response);
+    }
     
     @Operation(summary = "新增预约单")
     @PreAuthorize("@permission.has('lem:reservation:add')")
