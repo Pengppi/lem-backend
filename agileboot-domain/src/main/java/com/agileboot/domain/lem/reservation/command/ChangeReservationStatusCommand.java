@@ -7,13 +7,11 @@
 
 package com.agileboot.domain.lem.reservation.command;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class ChangeReservationStatusCommand {
     private Long reservationId;
-    
     private Integer status;
+    private String reviewRemark;
 }

@@ -1,6 +1,7 @@
 package com.agileboot.domain.system.dept.db;
 
 import com.github.yulichang.base.MPJBaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -10,6 +11,7 @@ import com.github.yulichang.base.MPJBaseMapper;
  * @author valarchie
  * @since 2022-06-16
  */
+@Mapper
 public interface SysDeptMapper extends MPJBaseMapper<SysDeptEntity> {
 
 }

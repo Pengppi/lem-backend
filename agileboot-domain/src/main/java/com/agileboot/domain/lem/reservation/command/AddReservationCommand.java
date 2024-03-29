@@ -11,14 +11,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class AddReservationCommand {
     
     private Long equipmentId;
-    
-    private List<Long> reviewerIds;
     
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date startDatetime;

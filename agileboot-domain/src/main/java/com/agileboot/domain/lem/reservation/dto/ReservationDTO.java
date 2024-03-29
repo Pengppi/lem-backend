@@ -8,11 +8,9 @@
 package com.agileboot.domain.lem.reservation.dto;
 
 import com.agileboot.common.annotation.ExcelColumn;
-import com.agileboot.domain.lem.approval.dto.ApprovalResult;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class ReservationDTO {
@@ -20,8 +18,14 @@ public class ReservationDTO {
     private Long reservationId;
     @ExcelColumn(name = "申请人")
     private String userName;
+    @ExcelColumn(name = "审批人")
+    private String reviewerName;
+    @ExcelColumn(name = "所在部门")
+    private String deptName;
     @ExcelColumn(name = "申请设备")
     private String equipmentName;
+    @ExcelColumn(name = "设备型号")
+    private String equipmentModel;
     @ExcelColumn(name = "申请状态")
     private Integer status;
     @ExcelColumn(name = "设备使用开始时间")
@@ -32,5 +36,11 @@ public class ReservationDTO {
     private Date createTime;
     @ExcelColumn(name = "更新时间")
     private Date updateTime;
-    private List<ApprovalResult> approvalResults;
+    private String remark;
+    private String reviewRemark;
+    
+    public static void main(String[] args) {
+        ReservationDTO reservationDTO = new ReservationDTO();
+        
+    }
 }

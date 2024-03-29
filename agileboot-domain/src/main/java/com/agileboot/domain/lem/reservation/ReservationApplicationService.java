@@ -9,8 +9,6 @@ package com.agileboot.domain.lem.reservation;
 
 import com.agileboot.common.core.page.PageDTO;
 import com.agileboot.common.enums.common.EquipmentStatusEnum;
-import com.agileboot.domain.lem.approval.ApprovalApplicationService;
-import com.agileboot.domain.lem.approval.command.AddApprovalCommand;
 import com.agileboot.domain.lem.equipment.EquipmentApplicationService;
 import com.agileboot.domain.lem.equipment.command.ChangeEquipmentStatusCommand;
 import com.agileboot.domain.lem.reservation.command.AddReservationCommand;
@@ -42,8 +40,6 @@ public class ReservationApplicationService {
     
     private final EquipmentApplicationService equipmentApplicationService;
     
-    private final ApprovalApplicationService approvalApplicationService;
-    
     private final SysDeptMapper sysDeptMapper;
     
     public List<ReviewerDTO> getReviewerList(Long userId) {
@@ -63,15 +59,12 @@ public class ReservationApplicationService {
     
     public List<ReservationDTO> getReservationList(ReservationQuery query) {
         List<ReservationDTO> reservationList = reservationService.selectJoinList(ReservationDTO.class, query.toQueryWrapper());
-        reservationList.forEach(reservationDTO ->
-                        reservationDTO.setApprovalResults(approvalApplicationService.getApprovalResultList(reservationDTO.getReservationId())));
         return reservationList;
     }
     
+    // todo 修改获取审批人的方式
     public PageDTO<ReservationDTO> getReservationPage(ReservationQuery query) {
         Page<ReservationDTO> reservationPage = reservationService.selectJoinListPage(query.toPage(), ReservationDTO.class, query.toQueryWrapper());
-        reservationPage.getRecords().forEach(reservationDTO ->
-                reservationDTO.setApprovalResults(approvalApplicationService.getApprovalResultList(reservationDTO.getReservationId())));
         return new PageDTO<>(reservationPage);
     }
     
@@ -84,15 +77,12 @@ public class ReservationApplicationService {
         ReservationModel reservationModel = reservationModelFactory.create();
         reservationModel.loadAddReservationCommand(command);
         reservationModel.insert();
-        Long reservationId = reservationModel.getReservationId();
-        command.getReviewerIds().stream().map(reviewerId ->
-                new AddApprovalCommand(reservationId, reviewerId)
-        ).forEach(approvalApplicationService::addApproval);
     }
     
     public void changeReservationStatus(ChangeReservationStatusCommand command) {
         ReservationModel reservationModel = reservationModelFactory.loadById(command.getReservationId());
         reservationModel.setStatus(command.getStatus());
+        reservationModel.setReviewRemark(command.getReviewRemark());
         reservationModel.updateById();
     }
     

@@ -78,9 +78,8 @@ public class ReservationController {
     @Operation(summary = "修改预约状态")
     @PreAuthorize("@permission.has('lem:reservation:edit')")
     @AccessLog(title = "预约状态更新", businessType = BusinessTypeEnum.MODIFY)
-    @PutMapping("/{reservationId}/status")
-    public ResponseDTO<Void> changeStatus(@PathVariable Long reservationId, @RequestBody ChangeReservationStatusCommand command) {
-        command.setReservationId(reservationId);
+    @PutMapping("/status")
+    public ResponseDTO<Void> changeStatus(@RequestBody ChangeReservationStatusCommand command) {
         reservationApplicationService.changeReservationStatus(command);
         return ResponseDTO.ok();
     }

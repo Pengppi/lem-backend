@@ -13,9 +13,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @TableName("equipment_reservation")
 @Data
 public class ReservationEntity extends BaseEntity<ReservationEntity> {
@@ -34,6 +36,9 @@ public class ReservationEntity extends BaseEntity<ReservationEntity> {
     
     @TableField("status")
     private Integer status;
+    
+    @TableField("review_remark")
+    private String reviewRemark;
     
     @TableField("remark")
     private String remark;
