@@ -49,7 +49,6 @@ public class EquipmentController {
     }
     
     @Operation(summary = "设备卡片列表")
-    @PreAuthorize("@permission.has('lem:equipment:cardList')")
     @GetMapping("/cardList")
     public ResponseDTO<PageDTO<EquipmentCardDTO>> equipmentCardList(EquipmentCardQuery query) {
         PageDTO<EquipmentCardDTO> page = equipmentApplicationService.getCardList(query);
@@ -61,7 +60,6 @@ public class EquipmentController {
      * 根据设备编号获取详细信息
      */
     @Operation(summary = "设备详情")
-    @PreAuthorize("@permission.has('lem:equipment:query')")
     @GetMapping("/{equipmentId}")
     public ResponseDTO<EquipmentDTO> getEquipmentInfo(@PathVariable Long equipmentId) {
         EquipmentDTO equipmentInfo = equipmentApplicationService.getEquipmentInfo(equipmentId);

@@ -12,7 +12,7 @@ spring:
                 allow:
                 url-pattern: /druid/*
                 # 控制台管理用户名和密码
-                login-username: agileboot
+                login-username: admin
                 login-password: 123456
             filter:
                 stat:
