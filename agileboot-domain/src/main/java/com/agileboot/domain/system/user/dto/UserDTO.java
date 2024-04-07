@@ -7,10 +7,11 @@ import com.agileboot.domain.common.cache.CacheCenter;
 import com.agileboot.domain.system.dept.db.SysDeptEntity;
 import com.agileboot.domain.system.post.db.SysPostEntity;
 import com.agileboot.domain.system.role.db.SysRoleEntity;
-import com.agileboot.domain.system.user.db.SysUserEntity;
 import com.agileboot.domain.system.user.db.SearchUserDO;
-import java.util.Date;
+import com.agileboot.domain.system.user.db.SysUserEntity;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * @author valarchie
@@ -19,6 +20,15 @@ import lombok.Data;
 @Data
 public class UserDTO {
 
+    @ExcelColumn(name = "岗位ID")
+    private Long postId;
+    @ExcelColumn(name = "岗位名称")
+    private String postName;
+
+
+    @ExcelColumn(name = "用户ID")
+    private Long userId;
+    
     public UserDTO(SysUserEntity entity) {
         if (entity != null) {
             BeanUtil.copyProperties(entity, this);
@@ -39,33 +49,38 @@ public class UserDTO {
             }
 
             if (entity.getPostId() != null) {
-                SysPostEntity post = CacheCenter.postCache.getObjectById(entity.getRoleId());
+                SysPostEntity post = CacheCenter.postCache.getObjectById(entity.getPostId());
                 this.postName = post != null ? post.getPostName() : "";
             }
 
         }
     }
-
+    
     public UserDTO(SearchUserDO entity) {
         if (entity != null) {
             BeanUtil.copyProperties(entity, this);
-
+            
+            SysDeptEntity dept = CacheCenter.deptCache.get(entity.getDeptId() + "");
+            if (dept != null) {
+                this.deptName = dept.getDeptName();
+            }
+            
+            SysUserEntity creator = CacheCenter.userCache.getObjectById(entity.getCreatorId());
+            if (creator != null) {
+                this.creatorName = creator.getUsername();
+            }
+            
             if (entity.getRoleId() != null) {
                 SysRoleEntity roleEntity = CacheCenter.roleCache.getObjectById(entity.getRoleId());
                 this.roleName = roleEntity != null ? roleEntity.getRoleName() : "";
             }
+            
+            if (entity.getPostId() != null) {
+                SysPostEntity post = CacheCenter.postCache.getObjectById(entity.getPostId());
+                this.postName = post != null ? post.getPostName() : "";
+            }
         }
     }
-
-
-    @ExcelColumn(name = "用户ID")
-    private Long userId;
-
-    @ExcelColumn(name = "职位ID")
-    private Long postId;
-
-    @ExcelColumn(name = "职位名称")
-    private String postName;
 
     @ExcelColumn(name = "角色ID")
     private Long roleId;

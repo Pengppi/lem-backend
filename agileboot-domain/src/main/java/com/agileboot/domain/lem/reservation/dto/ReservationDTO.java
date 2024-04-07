@@ -34,7 +34,7 @@ public class ReservationDTO {
     private Date endDatetime;
     @ExcelColumn(name = "申请时间")
     private Date createTime;
-    @ExcelColumn(name = "更新时间")
+    @ExcelColumn(name = "审批时间")
     private Date updateTime;
     private String remark;
     private String reviewRemark;
