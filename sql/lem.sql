@@ -10,6 +10,7 @@ create table equipment
     production_date date                 null,
     purchase_date   date                 null,
     supplier_id     bigint               null,
+    dept_id bigint null,
     status          smallint   default 1 not null,
     description     varchar(256)         null,
     remark          varchar(512)         null comment '备注',
@@ -59,22 +60,5 @@ create table equipment_reservation
 );
 
 
--- 设备维修保养记录表 (maintenance_record)
-drop table if exists `maintenance_record`;
-create table maintenance_record
-(
-    maintenance_record_id bigint auto_increment
-        primary key,
-    equipment_id          bigint               null,
-    technician_id         bigint               null,
-    maintenance_date      datetime             null,
-    maintenance_content   text                 null,
-    status                smallint   default 1 not null comment '状态 1:未开始 2:维修中 3:已维修 4:维修失败',
-    remark                varchar(512)         null comment '备注',
-    creator_id            bigint               null comment '创建者ID',
-    create_time           datetime             null comment '创建时间',
-    updater_id            bigint               null comment '更新者ID',
-    update_time           datetime             null comment '更新时间',
-    deleted               tinyint(1) default 0 not null comment '逻辑删除'
-);
+
 

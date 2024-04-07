@@ -10,7 +10,9 @@ package com.agileboot.domain.lem.equipment.query;
 import cn.hutool.core.util.StrUtil;
 import com.agileboot.common.core.page.MPJAbstractPageQuery;
 import com.agileboot.domain.lem.equipment.db.EquipmentEntity;
+import com.agileboot.domain.lem.equipment.dto.EquipmentDTO;
 import com.agileboot.domain.lem.supplier.db.SupplierEntity;
+import com.agileboot.domain.system.dept.db.SysDeptEntity;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.Data;
 
@@ -28,8 +30,10 @@ public class EquipmentQuery extends MPJAbstractPageQuery {
     public MPJLambdaWrapper addQueryCondition() {
         MPJLambdaWrapper queryWrapper = new MPJLambdaWrapper<EquipmentEntity>()
                 .selectAll(EquipmentEntity.class)
-                .selectAs(SupplierEntity::getName, "supplierName")
+                .selectAs(SupplierEntity::getName, EquipmentDTO::getSupplierName)
+                .selectAs(SysDeptEntity::getDeptName, EquipmentDTO::getDeptName)
                 .leftJoin(SupplierEntity.class, SupplierEntity::getSupplierId, EquipmentEntity::getSupplierId)
+                .leftJoin(SysDeptEntity.class, SysDeptEntity::getDeptId, EquipmentEntity::getDeptId)
                 .eq(EquipmentEntity::getDeleted, 0)
                 .eq(equipmentId != null, EquipmentEntity::getEquipmentId, equipmentId)
                 .eq(status != null, EquipmentEntity::getStatus, status)

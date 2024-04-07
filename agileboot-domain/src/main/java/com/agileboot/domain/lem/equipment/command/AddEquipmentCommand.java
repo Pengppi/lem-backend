@@ -36,6 +36,9 @@ public class AddEquipmentCommand {
     @ExcelColumn(name = "供应商ID")
     Long supplierId;
     
+    @ExcelColumn(name = "部门ID")
+    Long deptId;
+    
     @ExcelColumn(name = "状态")
     Integer status;
     

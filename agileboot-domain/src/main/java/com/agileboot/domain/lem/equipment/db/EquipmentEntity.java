@@ -46,6 +46,9 @@ public class EquipmentEntity extends BaseEntity<EquipmentEntity> {
     @TableField("supplier_id")
     Long supplierId;
     
+    @TableField("dept_id")
+    Long deptId;
+    
     @TableField("status")
     Integer status;
     

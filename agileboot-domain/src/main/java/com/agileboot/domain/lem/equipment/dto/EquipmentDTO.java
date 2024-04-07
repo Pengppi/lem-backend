@@ -32,6 +32,12 @@ public class EquipmentDTO {
     @ExcelColumn(name = "购买日期")
     Date purchaseDate;
     
+    @ExcelColumn(name = "部门ID")
+    Long deptId;
+    
+    @ExcelColumn(name = "部门名称")
+    String deptName;
+    
     @ExcelColumn(name = "供应商ID")
     Long supplierId;
     
