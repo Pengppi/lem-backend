@@ -22,7 +22,6 @@ import com.agileboot.infrastructure.user.AuthenticationUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +51,6 @@ public class ReservationController {
     
     @Operation(summary = "预约列表导出")
     @AccessLog(title = "预约管理", businessType = BusinessTypeEnum.EXPORT)
-    @PreAuthorize("@permission.has('lem:reservation:export')")
     @GetMapping("/excel")
     public void export(HttpServletResponse response, ReservationQuery query) {
         List<ReservationDTO> all = reservationApplicationService.getReservationList(query);
@@ -60,7 +58,6 @@ public class ReservationController {
     }
     
     @Operation(summary = "新增预约单")
-    @PreAuthorize("@permission.has('lem:reservation:add')")
     @AccessLog(title = "预约设备", businessType = BusinessTypeEnum.ADD)
     @PostMapping
     public ResponseDTO<Void> add(@RequestBody AddReservationCommand command) {
@@ -76,7 +73,6 @@ public class ReservationController {
     }
     
     @Operation(summary = "修改预约状态")
-    @PreAuthorize("@permission.has('lem:reservation:edit')")
     @AccessLog(title = "预约状态更新", businessType = BusinessTypeEnum.MODIFY)
     @PutMapping("/status")
     public ResponseDTO<Void> changeStatus(@RequestBody ChangeReservationStatusCommand command) {
