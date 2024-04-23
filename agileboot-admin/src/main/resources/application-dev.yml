@@ -99,7 +99,7 @@ springdoc:
 # 项目相关配置
 agileboot:
     # 文件基路径 示例（ Windows配置D:\agileboot，Linux配置 /home/agileboot）
-    file-base-dir: ./file/lem
+    file-base-dir: D:\SCNU\毕业设计\lem-backend\file
     # 前端url请求转发前缀
     api-prefix: /dev-api
     demo-enabled: false

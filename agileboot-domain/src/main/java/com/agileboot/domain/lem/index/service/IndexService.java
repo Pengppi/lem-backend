@@ -24,10 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,14 +34,15 @@ public class IndexService {
     private final EquipmentService equipmentService;
     
     public List<DailyReservationData> getLatestNewsData() {
-        LocalDate endDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now().plusDays(1);
         LocalDate startDate = endDate.minusWeeks(2);
         MPJLambdaWrapper<ReservationEntity> queryWrapper = new MPJLambdaWrapper<>();
         queryWrapper.selectFunc(SQLFuncEnum.DATE, ReservationEntity::getCreateTime, DailyReservationData::getDate)
                 .selectFunc(SQLFuncEnum.COUNT, ReservationEntity::getReservationId, DailyReservationData::getReservationCount)
                 .selectFunc(() -> "sum(if(%s = 1,0,1))", ReservationEntity::getStatus, DailyReservationData::getReviewCount)
                 .between(ReservationEntity::getCreateTime, startDate, endDate)
-                .groupBy("date");
+                .groupBy("date")
+                .orderByDesc("date");
         return reservationService.selectJoinList(DailyReservationData.class, queryWrapper);
     }
     
@@ -151,12 +149,6 @@ public class IndexService {
         return ListUtil.of(new BarChartDTO(lastWeekData), new BarChartDTO(thisWeekData));
     }
     
-    private String getGrowthRate(int cur, int last) {
-        if (last == 0) {
-            return "0%";
-        }
-        return String.format("%.2f", (cur - last) * 100.0 / last) + "%";
-    }
     
     public List<TableDTO> getTableData() {
         MPJLambdaWrapper<ReservationEntity> queryWrapper = new MPJLambdaWrapper<>();
@@ -164,8 +156,9 @@ public class IndexService {
                 .selectFunc(SQLFuncEnum.COUNT, ReservationEntity::getReservationId, TableDTO::getReservationCount)
                 .selectFunc(() -> "count(distinct %s)", ReservationEntity::getCreatorId, TableDTO::getUserCount)
                 .groupBy("date");
-        Map<String, TableDTO> map = reservationService.selectJoinList(TableDTO.class, queryWrapper)
-                .stream().collect(Collectors.toMap(TableDTO::getDate, data -> data));
+        TreeMap<String, TableDTO> map = new TreeMap<>((a, b) -> b.compareTo(a));
+        map.putAll(reservationService.selectJoinList(TableDTO.class, queryWrapper)
+                .stream().collect(Collectors.toMap(TableDTO::getDate, data -> data)));
         queryWrapper.clear();
         queryWrapper.selectFunc(SQLFuncEnum.DATE, ReservationEntity::getUpdateTime, TableDTO::getDate)
                 .selectFunc(SQLFuncEnum.COUNT, ReservationEntity::getUpdaterId, TableDTO::getReviewCount)
